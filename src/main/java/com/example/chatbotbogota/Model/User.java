@@ -29,6 +29,14 @@ public class User implements UserDetails {
     @Column(name = "creation_time", nullable = false)
     private LocalTime creation_time;
 
+    @Column(name ="age")
+    private Integer age;
+
+    @Column(name="city")
+    private String city;
+
+    @Column(name ="availability")
+    private String availability;
 
     @Enumerated(EnumType.STRING)
     private Role role;

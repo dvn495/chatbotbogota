@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class    AuthController {
 
     private final AuthService authService;
 

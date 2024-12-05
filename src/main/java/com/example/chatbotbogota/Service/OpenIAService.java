@@ -41,7 +41,7 @@ public class OpenIAService {
             new PreguntaFrecuente("¿Qué requisitos necesito para inscribirme en Campuslands?",
                     "En Campuslands, creemos que más allá de los conocimientos previos, las cualidades más importantes que buscamos en nuestros estudiantes son la actitud, la lógica y la disciplina. Valoramos profundamente la actitud positiva y el compromiso con el aprendizaje, la capacidad de razonamiento lógico y la disciplina para afrontar los desafíos del programa intensivo. Si posees estas cualidades, tienes todo lo necesario para embarcarte en esta experiencia transformadora."),
             new PreguntaFrecuente("¿Cuál es el costo del programa y existen facilidades de pago?",
-                    "El programa tiene una inversión de 20 millones de pesos, pero en Campuslands estamos comprometidos con hacer la educación accesible. Contamos con planes de becas que cubren entre el 50% y el 100% del costo, además de opciones de financiamiento para quienes califiquen. Te invitamos a agendar una cita en el campus para conocer más sobre las oportunidades de apoyo financiero y ver cómo Campuslands puede ser el primer paso hacia tu futuro en tecnología."),
+                    "El programa tiene una inversión de 21'500.000 de pesos, pero en Campuslands estamos comprometidos con hacer la educación accesible. El costo del programa es de *$10.750.000* si perteneces a estratos 1, 2 o 3, gracias a una beca del 50%. Las opciones de financiamiento incluyen: **LUIMNI**, donde pagas $70.000 mensuales durante la formación y el valor restante lo acuerdas según tu base salarial al finalizar; y **CAMPUS**, que permite financiamiento en 3 cuotas sin interés (primera cuota: 10 días después de iniciar, segunda cuota: 60 días después, tercera cuota: 120 días después)."),
             new PreguntaFrecuente("¿Qué materias o habilidades voy a aprender en Campuslands?",
                     "En Campuslands, aprenderás programación avanzada, inglés y habilidades blandas esenciales para el mundo laboral. El plan de estudios está diseñado para proporcionarte competencias técnicas en desarrollo de software y habilidades de comunicación en inglés que te abrirán puertas en el mercado global. Además, cultivamos habilidades interpersonales como trabajo en equipo, adaptabilidad y liderazgo, asegurándonos de que seas un profesional completo y preparado para enfrentar los desafíos del mercado."),
             new PreguntaFrecuente("¿Qué nivel de inglés necesito para ser admitido?",
@@ -100,6 +100,7 @@ public class OpenIAService {
                     "Durante el programa, los jóvenes trabajan en habilidades interpersonales y de liderazgo, como la comunicación efectiva, la resolución de problemas, el trabajo en equipo y la adaptabilidad, apoyados por psicólogos y especialistas en desarrollo personal."),
             new PreguntaFrecuente("¿Cómo es el perfil final de un egresado de Campuslands?",
                     "El egresado sale como Desarrollador Junior, listo para trabajar en equipos de desarrollo, con competencias técnicas, habilidades de comunicación en inglés y una sólida base en habilidades blandas, lo que lo hace un candidato ideal para empresas en el sector tecnológico.")
+
     );
 
 
