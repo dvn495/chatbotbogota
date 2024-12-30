@@ -42,6 +42,7 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         sessions.remove(session);
         sessionLastRequestTime.remove(session.getId());
+        openIAService.clearConversation(session.getId());
         LOGGER.info("Cliente desconectado: {}", session.getId());
     }
 
@@ -68,7 +69,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
             // Procesa el mensaje y envía la respuesta
             String userMessage = jsonMessage.getString("message");
-            String aiResponse = openIAService.getCustomGPTResponse(userMessage);
+            String aiResponse = openIAService.getCustomGPTResponse(userMessage, sessionId);
             sendMessage(session, aiResponse);
 
         } catch (Exception e) {
