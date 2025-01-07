@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 .requestMatchers("/chatBogota").permitAll()
                                 .requestMatchers("/chatbogota/**").permitAll()
                                 .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/whatsapp/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->

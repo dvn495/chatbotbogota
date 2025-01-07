@@ -52,30 +52,67 @@ public class ChatHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         long lastRequestTime = sessionLastRequestTime.getOrDefault(sessionId, 0L);
 
-        try {
-            if (currentTime - lastRequestTime < RATE_LIMIT_MS) {
-                sendErrorMessage(session, "Por favor, espera unos segundos antes de enviar otro mensaje.");
-                return;
-            }
+        if (currentTime - lastRequestTime < RATE_LIMIT_MS) {
+            long waitTime = RATE_LIMIT_MS - (currentTime - lastRequestTime);
 
-            JSONObject jsonMessage = parseMessage(message.getPayload());
+            try {
+                LOGGER.info("Esperando {} ms antes de procesar el mensaje para la sesión {}", waitTime, sessionId);
+                Thread.sleep(waitTime); // Esperar el tiempo restante
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.error("El hilo fue interrumpido durante la espera: {}", e.getMessage(), e);
+                sendErrorMessage(session, "Interrupción inesperada durante la espera. Intenta nuevamente.");
+                return; // Salir en caso de interrupción
+            }
+        }
+        JSONObject jsonMessage = parseMessage(message.getPayload());
+        try {
             if (!jsonMessage.has("message")) {
                 sendErrorMessage(session, "El formato del mensaje no es válido. Debe ser un JSON con el campo 'message'.");
                 return;
             }
-
-            // Actualiza el tiempo de la última solicitud
-            sessionLastRequestTime.put(sessionId, currentTime);
-
-            // Procesa el mensaje y envía la respuesta
-            String userMessage = jsonMessage.getString("message");
-            String aiResponse = openIAService.getCustomGPTResponse(userMessage, sessionId);
-            sendMessage(session, aiResponse);
-
-        } catch (Exception e) {
-            LOGGER.error("Error en el manejo del mensaje para la sesión {}: {}", sessionId, e.getMessage(), e);
-            sendErrorMessage(session, "Error interno del servidor. Por favor, intenta más tarde.");
+        }catch (IllegalArgumentException e){
+            sendErrorMessage(session, e.getMessage());
+            return;
         }
+
+        // Actualiza el tiempo de la última solicitud
+        sessionLastRequestTime.put(sessionId, currentTime);
+        String userMessage = jsonMessage.getString("message");
+
+        boolean messageProcessed = false;
+        int maxRetries = 3;
+        int retries = 0;
+        long retryDelayMs = 2000;
+
+        while (!messageProcessed && retries < maxRetries){
+            try {
+                retries++;
+                // Procesa el mensaje y envía la respuesta
+
+                String aiResponse = openIAService.getCustomGPTResponse(userMessage, sessionId);
+                sendMessage(session, aiResponse);
+                messageProcessed=true;
+
+            } catch (Exception e) {
+                LOGGER.error("Error en el manejo del mensaje para la sesión {}: {}", sessionId, e.getMessage(), e);
+                if (retries < maxRetries) {
+                    try{
+                        Thread.sleep(retryDelayMs);
+                    } catch (InterruptedException ie){
+                        Thread.currentThread().interrupt();
+                        LOGGER.error("interrumpido durante el intento: {}", ie.getMessage(), ie);
+                        break;
+                    }
+                } else {
+                    LOGGER.error("Todos los intentos fallaron para la sesion {}.", sessionId);
+                    sendErrorMessage(session, "Error interno del servidor. Por favor, intenta más tarde.");
+                }
+            }
+
+        }
+
+
     }
 
     private JSONObject parseMessage(String payload) {
